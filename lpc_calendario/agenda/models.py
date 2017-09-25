@@ -1,31 +1,21 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class Usuario(models.Model):
-    nome = models.CharField(max_length = 150)
-    email = models.CharField(max_length = 100)
-    cpf = models.CharField(max_length = 12)
-    endereco = models.CharField(max_length = 200)
-    telefone = models.CharField(max_length = 50)
+class Agenda(models.Model):
+    visivel = models.BooleanField(True, verbose_name = "Visivel")
+    descricao = models.TextField()
+    usuario = models.ManyToManyField(User)
+    tipo = models.CharField(max_length = 100)
+    institucional = models.BooleanField(True, verbose_name = "Institucional")
 
     def __str__(self):
-        return self.nome
+        return '{}'.format(self.tipo)
 
 class Compromisso(models.Model):
     nome = models.CharField(max_length=100, null=True, blank=False)
-    data = models.DateField(blank=True, null=True)
+    dataHoraInicio = models.DateTimeField(blank=True, null=True)
+    dataHoraFim = models.DateTimeField(blank=True, null=True)
+    agendas = models.ForeignKey(Agenda, null=True, blank=False)
 
     def __str__(self):
         return "{}".format(self.nome)
-
-class Agenda(models.Model):
-    descricao = models.TextField()
-    usuarios = models.ForeignKey(Usuario, null=True, blank=False)
-    tiposAgenda = (u'privada',u'privada'), (u'publica',u'publica')
-    tipo = models.CharField(max_length = 50, choices=tiposAgenda)
-    compromissos = models.ManyToManyField(Compromisso)
-
-    def __str__(self):
-        return '{}'.format(self.nome)
-
-class AgendaInstitucional(models.Model):
-    feriados = models.ManyToManyField(Compromisso)
