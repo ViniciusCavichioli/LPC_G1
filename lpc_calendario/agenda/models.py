@@ -2,11 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Agenda(models.Model):
-    visivel = models.BooleanField(True,)
+    visivel = models.BooleanField(True)
     descricao = models.TextField()
-    usuario = models.ManyToManyField(User)
     tipo = models.CharField(max_length = 100)
     institucional = models.BooleanField(True)
+    usuario = models.ManyToManyField(User, null=True, blank=False)
 
     def __str__(self):
         return '{}'.format(self.tipo)
@@ -19,3 +19,11 @@ class Compromisso(models.Model):
 
     def __str__(self):
         return "{}".format(self.nome)
+
+class Compartilhamento(models.Model):
+    agenda = models.ForeignKey(Agenda, null=True, blank=False)
+    usuario = models.ForeignKey(User, null=True, blank=False)
+    compromissos = models.ForeignKey(Compromisso, null=True, blank=False)
+
+    def __str__(self):
+        return "{}".format(self.agenda.tipo)
