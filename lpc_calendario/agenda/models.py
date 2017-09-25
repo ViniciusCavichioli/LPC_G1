@@ -2,11 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Agenda(models.Model):
-    visivel = models.BooleanField(True, verbose_name = "Visivel")
+    visivel = models.BooleanField(True,)
     descricao = models.TextField()
     usuario = models.ManyToManyField(User)
     tipo = models.CharField(max_length = 100)
-    institucional = models.BooleanField(True, verbose_name = "Institucional")
+    institucional = models.BooleanField(True)
 
     def __str__(self):
         return '{}'.format(self.tipo)
